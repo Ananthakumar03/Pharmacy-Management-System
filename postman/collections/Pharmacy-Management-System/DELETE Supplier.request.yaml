@@ -1,0 +1,6 @@
+$kind: http-request
+name: "   DELETE Supplier"
+description: ""
+url: "   http://localhost:5000/api/suppliers/1"
+method: DELETE
+order: 4499804435347155

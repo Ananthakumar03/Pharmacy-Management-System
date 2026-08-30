@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaCare - Pending Approvals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f6fb;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header h3 {
+            font-weight: 800;
+            color: #1e1b4b;
+            margin: 0;
+        }
+
+        .back-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .custom-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        table {
+            margin-bottom: 0;
+        }
+
+        thead th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.9rem 1.2rem;
+        }
+
+        tbody td {
+            padding: 0.9rem 1.2rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .btn-approve {
+            background: #14b8a6;
+            border: none;
+            color: #fff;
+            border-radius: 8px;
+            padding: 0.35rem 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .btn-approve:hover { background: #0d9488; color: #fff; }
+
+        .btn-reject {
+            background: #fee2e2;
+            border: none;
+            color: #b91c1c;
+            border-radius: 8px;
+            padding: 0.35rem 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .btn-reject:hover { background: #fecaca; }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #9ca3af;
+        }
+        .empty-state i { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <div>
+            <h3>🕒 Pending Approvals</h3>
+            <p class="text-muted mb-0" style="font-size:0.9rem;">New account requests waiting for your approval</p>
+        </div>
+        <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    </div>
+
+    <div id="alertMsg"></div>
+
+    <div class="custom-card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Requested On</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="pendingList">
+                <!-- rows injected by JS -->
+            </tbody>
+        </table>
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <i class="bi bi-check-circle"></i>
+            No pending approvals right now.
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+
+        async function loadPendingUsers() {
+            try {
+                const res = await fetch("http://localhost:5000/api/auth/pending-users", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                const data = await res.json();
+
+                const tbody = document.getElementById("pendingList");
+                const emptyState = document.getElementById("emptyState");
+                tbody.innerHTML = "";
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    emptyState.style.display = "block";
+                    return;
+                }
+                emptyState.style.display = "none";
+
+                data.forEach(user => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td class="text-capitalize">${user.role}</td>
+                        <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                        <td><span class="badge-pending">Pending</span></td>
+                        <td>
+                            <button class="btn-approve" onclick="approveUser(${user.id})">Approve</button>
+                            <button class="btn-reject" onclick="rejectUser(${user.id})">Reject</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+            } catch (err) {
+                console.error("Error loading pending users:", err);
+                document.getElementById("alertMsg").innerHTML =
+                    `<div class="alert alert-danger py-2 small">Could not load pending approvals. Is the server running?</div>`;
+            }
+        }
+
+        async function approveUser(id) {
+            if (!confirm("Approve this account?")) return;
+            try {
+                const res = await fetch(`http://localhost:5000/api/auth/approve-user/${id}`, {
+                    method: "PUT",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    loadPendingUsers();
+                } else {
+                    alert(data.message || "Failed to approve");
+                }
+            } catch (err) {
+                alert("Server connection failed");
+            }
+        }
+
+        async function rejectUser(id) {
+            if (!confirm("Reject and delete this account request?")) return;
+            try {
+                const res = await fetch(`http://localhost:5000/api/auth/reject-user/${id}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    loadPendingUsers();
+                } else {
+                    alert(data.message || "Failed to reject");
+                }
+            } catch (err) {
+                alert("Server connection failed");
+            }
+        }
+
+        loadPendingUsers();
+    </script>
+</body>
+</html>

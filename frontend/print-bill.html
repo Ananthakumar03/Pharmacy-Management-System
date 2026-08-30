@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Invoice - MediCare Pharmacy</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 15px;
+            border: 2px solid #2d6a4f;
+        }
+
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px;
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d6a4f;
+        }
+
+        .tagline {
+            text-align: center;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            padding: 3px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        table.bordered {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px;
+        }
+
+        table.bordered th, table.bordered td {
+            border: 1px solid #000;
+            padding: 4px;
+            text-align: left;
+        }
+
+        table.bordered th {
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        .text-right { text-align: right !important; }
+        .text-center { text-align: center !important; }
+        .bold { font-weight: bold; }
+
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .footer-table td {
+            border: 1px solid #000;
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .print-btn-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .btn-print {
+            background-color: #2d6a4f;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .invoice-box { border: 1px solid #000; width: 100%; }
+            .print-btn-container { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="print-btn-container">
+        <button class="btn-print" onclick="window.print()">Print Invoice</button>
+    </div>
+
+    <div class="invoice-box">
+        <!-- HEADER -->
+        <table class="header-table">
+            <tr>
+                <td style="width: 60%;">
+                    <div class="brand-title">MediCare Pharmacy</div>
+                    <div>📍 45, Thillai Nagar Main Road, Trichy, Tamil Nadu - 620018</div>
+                    <div>📞 +91 98765 43210 &nbsp; | &nbsp; GSTIN: 33AABCM1234F1Z5</div>
+                </td>
+                <td style="width: 40%; text-align: right;">
+                    <div class="bold" style="font-size: 14px;">TAX INVOICE</div>
+                    <div>Original for Recipient</div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="tagline">A single stop for all your Healthcare needs!</div>
+
+        <!-- INVOICE & CUSTOMER DETAILS -->
+        <table class="bordered">
+            <tr>
+                <td style="width: 50%;">
+                    <div class="bold">Customer Details:</div>
+                    <div><span class="bold">Name:</span> <span id="custName">Cash Customer</span></div>
+                    <div><span class="bold">Phone:</span> <span id="custPhone">-</span></div>
+                    <div>Place of Supply: Tamil Nadu (33)</div>
+                </td>
+                <td style="width: 50%;">
+                    <div><span class="bold">Invoice No:</span> <span id="billNo">#1001</span></div>
+                    <div><span class="bold">Invoice Date:</span> <span id="billDate">--</span></div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- ITEMS TABLE -->
+        <table class="bordered">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">Sr.</th>
+                    <th style="width: 35%;">Name of Product / Service</th>
+                    <th style="width: 10%;">Qty</th>
+                    <th style="width: 15%;">MRP (₹)</th>
+                    <th style="width: 15%;">Rate (₹)</th>
+                    <th style="width: 20%;">Total Value (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="invoiceItems">
+                <!-- Items populated dynamically -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="text-right bold">Total</td>
+                    <td class="text-center bold" id="totalQty">0</td>
+                    <td colspan="2"></td>
+                    <td class="text-right bold" id="subTotal">₹0.00</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right">GST (12%)</td>
+                    <td class="text-right" id="gstAmount">₹0.00</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right bold" style="font-size: 12px;">Grand Total</td>
+                    <td class="text-right bold" style="font-size: 12px;" id="grandTotal">₹0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- BANK & SIGNATURE DETAILS -->
+        <table class="footer-table">
+            <tr>
+                <td style="width: 55%;">
+                    <div class="bold">Bank Details</div>
+                    <div>Bank Name: HDFC Bank</div>
+                    <div>Branch: Thillai Nagar, Trichy</div>
+                    <div>A/C No: 50200012345678</div>
+                    <div>IFSC: HDFC0000123</div>
+                    <br>
+                    <div class="bold">Terms and Conditions:</div>
+                    <div>1. Goods once sold will not be taken back.</div>
+                    <div>2. Subject to Trichy Jurisdiction.</div>
+                </td>
+                <td style="width: 45%; text-align: center; vertical-align: bottom;">
+                    <br><br><br>
+                    <div>Certified that the particulars given above are true and correct.</div>
+                    <div class="bold" style="margin-top: 10px;">For MediCare Pharmacy</div>
+                    <br><br>
+                    <div>Authorised Signatory</div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="text-center bold" style="margin-top: 10px;">
+            Thanks for your order! We look forward to working with you again soon.
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const billData = JSON.parse(localStorage.getItem("lastBill") || "{}");
+
+            if (billData.items) {
+                document.getElementById("billNo").innerText = "#" + (billData.id || "1001");
+                document.getElementById("billDate").innerText = billData.date || new Date().toLocaleDateString('en-GB');
+                document.getElementById("custName").innerText = billData.customerName || "Cash Customer";
+                document.getElementById("custPhone").innerText = billData.customerPhone || "-";
+
+                let html = "";
+                let totalQty = 0;
+                let subtotal = 0;
+
+                billData.items.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    totalQty += item.quantity;
+
+                    html += `
+                        <tr>
+                            <td class="text-center">${index + 1}</td>
+                            <td class="bold">${item.name}</td>
+                            <td class="text-center">${item.quantity}</td>
+                            <td class="text-right">${parseFloat(item.price).toFixed(2)}</td>
+                            <td class="text-right">${parseFloat(item.price).toFixed(2)}</td>
+                            <td class="text-right">${itemTotal.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+
+                const gst = subtotal * 0.12;
+                const grandTotal = subtotal + gst;
+
+                document.getElementById("invoiceItems").innerHTML = html;
+                document.getElementById("totalQty").innerText = totalQty;
+                document.getElementById("subTotal").innerText = "₹" + subtotal.toFixed(2);
+                document.getElementById("gstAmount").innerText = "₹" + gst.toFixed(2);
+                document.getElementById("grandTotal").innerText = "₹" + grandTotal.toFixed(2);
+            }
+        };
+    </script>
+</body>
+</html>

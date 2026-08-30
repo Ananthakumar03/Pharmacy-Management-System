@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales & Billing - Pharmacy Management System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --primary-dark: #0f172a;
+            --accent-blue: #2563eb;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            min-height: 100vh;
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            position: fixed;
+            z-index: 100;
+        }
+
+        .brand-header {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin: 1.2rem 0 0.5rem 0.5rem;
+        }
+
+        .nav-link-custom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.65rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .nav-link-custom:hover {
+            background-color: #f1f5f9;
+            color: var(--primary-dark);
+        }
+
+        .nav-link-custom.active {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem 2.5rem;
+        }
+
+        .custom-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Search Dropdown inside Billing */
+        .search-container {
+            position: relative;
+        }
+
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+        }
+
+        .search-item:hover { 
+            background-color: #f8fafc; 
+        }
+
+        .bill-summary {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="brand-header">
+            <i class="bi bi-plus-circle-fill text-primary fs-3"></i> Pharmacy
+        </div>
+
+        <div class="nav-section-title">MAIN MENU</div>
+        <a href="dashboard.html" class="nav-link-custom"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+        <a href="medicines.html" class="nav-link-custom"><i class="bi bi-capsule"></i> Medicines</a>
+        <a href="sales.html" class="nav-link-custom active"><i class="bi bi-cart-check-fill"></i> Sales / Billing</a>
+
+        <div class="nav-section-title">SETTINGS & SYSTEM</div>
+        <a href="#" class="nav-link-custom" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <h4 class="fw-bold mb-4" style="color: var(--primary-dark);">Point of Sale (Billing)</h4>
+
+        <div class="row">
+            <!-- Left Side: Customer Info, Search & Cart Table -->
+            <div class="col-lg-8">
+                <!-- Customer Details Input -->
+                <div class="custom-card mb-3">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-person-fill text-primary me-2"></i>Customer Information</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-2 mb-md-0">
+                            <label class="form-label text-muted small fw-bold">CUSTOMER NAME</label>
+                            <input type="text" id="customerName" class="form-control" placeholder="Enter Customer Name (e.g. Ramesh)">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small fw-bold">PHONE NUMBER (OPTIONAL)</label>
+                            <input type="text" id="customerPhone" class="form-control" placeholder="Enter Mobile Number">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="custom-card">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-capsule-fill text-primary me-2"></i>Search & Add Medicines</h6>
+                    
+                    <!-- Search Input -->
+                    <div class="search-container mb-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                            <input type="text" id="billingSearch" class="form-control border-start-0" placeholder="Type medicine name to search..." onkeyup="searchBillingMedicine()" autocomplete="off">
+                        </div>
+                        <div id="billingSearchDropdown" class="search-dropdown"></div>
+                    </div>
+
+                    <!-- Cart Table -->
+                    <h6 class="fw-bold text-muted mb-3">Selected Items</h6>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Price (₹)</th>
+                                    <th style="width: 130px;">Quantity</th>
+                                    <th>Total (₹)</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartTableBody">
+                                <!-- Cart items rendered dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Bill Checkout Summary -->
+            <div class="col-lg-4">
+                <div class="custom-card">
+                    <h6 class="fw-bold mb-3">Payment Summary</h6>
+                    
+                    <div class="bill-summary mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Total Items:</span>
+                            <span class="fw-bold" id="totalItemsCount">0</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-6 fw-bold">Grand Total:</span>
+                            <span class="fs-4 fw-bold text-success" id="grandTotal">₹0.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm" onclick="completeCheckout()">
+                        <i class="bi bi-printer-fill me-2"></i> Complete Sale & Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) window.location.href = "index.html";
+
+        let cart = [];
+        let allMedicines = [];
+
+        async function fetchMedicines() {
+            try {
+                const res = await fetch("http://localhost:5000/api/medicines");
+                allMedicines = await res.json();
+                checkPendingDashboardItem();
+            } catch (err) {
+                console.error("Error fetching medicines:", err);
+            }
+        }
+
+        function searchBillingMedicine() {
+            const query = document.getElementById("billingSearch").value.toLowerCase().trim();
+            const dropdown = document.getElementById("billingSearchDropdown");
+
+            if (query === "") {
+                dropdown.style.display = "none";
+                return;
+            }
+
+            const filtered = allMedicines.filter(m => m.name.toLowerCase().includes(query));
+
+            if (filtered.length === 0) {
+                dropdown.innerHTML = `<div class="p-3 text-muted text-center small">No medicines found</div>`;
+            } else {
+                let html = "";
+                filtered.forEach(m => {
+                    const safeName = m.name.replace(/'/g, "\\'");
+                    html += `
+                        <div class="search-item" onclick="addToCart(${m.id}, '${safeName}', ${m.price}, ${m.quantity})">
+                            <div>
+                                <div class="fw-bold text-dark">${m.name}</div>
+                                <small class="text-muted">Stock: ${m.quantity}</small>
+                            </div>
+                            <span class="fw-bold text-primary">₹${m.price}</span>
+                        </div>
+                    `;
+                });
+                dropdown.innerHTML = html;
+            }
+            dropdown.style.display = "block";
+        }
+
+        function addToCart(id, name, price, stock) {
+            if (stock <= 0) {
+                alert("This medicine is out of stock!");
+                return;
+            }
+
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                if (existing.quantity < stock) {
+                    existing.quantity += 1;
+                } else {
+                    alert("Stock limit reached!");
+                }
+            } else {
+                cart.push({ id, name, price, quantity: 1, stock });
+            }
+
+            document.getElementById("billingSearch").value = "";
+            document.getElementById("billingSearchDropdown").style.display = "none";
+            renderCart();
+        }
+
+        function updateQuantity(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                if (change === 1 && item.quantity < item.stock) {
+                    item.quantity += 1;
+                } else if (change === -1 && item.quantity > 1) {
+                    item.quantity -= 1;
+                }
+            }
+            renderCart();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            renderCart();
+        }
+
+        function renderCart() {
+            const tbody = document.getElementById("cartTableBody");
+            let total = 0;
+            let itemCount = 0;
+
+            if (cart.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No items added to billing cart</td></tr>`;
+                document.getElementById("grandTotal").innerText = "₹0.00";
+                document.getElementById("totalItemsCount").innerText = "0";
+                return;
+            }
+
+            let html = "";
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                itemCount += item.quantity;
+
+                html += `
+                    <tr>
+                        <td class="fw-bold text-dark">${item.name}</td>
+                        <td>₹${parseFloat(item.price).toFixed(2)}</td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-secondary" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <span class="form-control text-center">${item.quantity}</span>
+                                <button class="btn btn-outline-secondary" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
+                        </td>
+                        <td class="fw-bold text-success">₹${itemTotal.toFixed(2)}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${item.id})"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById("grandTotal").innerText = `₹${total.toFixed(2)}`;
+            document.getElementById("totalItemsCount").innerText = itemCount;
+        }
+
+        function checkPendingDashboardItem() {
+            const pendingItem = localStorage.getItem("pendingCartItem");
+            if (pendingItem) {
+                const med = JSON.parse(pendingItem);
+                addToCart(med.id, med.name, med.price, med.stock);
+                localStorage.removeItem("pendingCartItem");
+            }
+        }
+
+        async function completeCheckout() {
+            if (cart.length === 0) {
+                alert("Please add at least one medicine to checkout.");
+                return;
+            }
+
+            const custName = document.getElementById("customerName").value.trim() || "Cash Customer";
+            const custPhone = document.getElementById("customerPhone").value.trim() || "-";
+
+            const total_amount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const items = cart.map(item => ({
+                id: item.id,
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price
+            }));
+
+            try {
+                const res = await fetch("http://localhost:5000/api/sales", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ total_amount, items })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    const billInfo = {
+                        id: data.saleId || Math.floor(1000 + Math.random() * 9000),
+                        date: new Date().toLocaleDateString('en-GB'),
+                        customerName: custName,
+                        customerPhone: custPhone,
+                        items: items,
+                        total_amount: total_amount
+                    };
+                    localStorage.setItem("lastBill", JSON.stringify(billInfo));
+
+                    window.open("print-bill.html", "_blank");
+
+                    cart = [];
+                    document.getElementById("customerName").value = "";
+                    document.getElementById("customerPhone").value = "";
+                    renderCart();
+                    fetchMedicines();
+                } else {
+                    alert(data.message || "Failed to complete sale.");
+                }
+            } catch (err) {
+                console.error("Checkout Error:", err);
+                alert("Server connection error.");
+            }
+        }
+
+        document.addEventListener("click", function (e) {
+            const container = document.querySelector(".search-container");
+            if (container && !container.contains(e.target)) {
+                document.getElementById("billingSearchDropdown").style.display = "none";
+            }
+        });
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        fetchMedicines();
+    </script>
+</body>
+</html>

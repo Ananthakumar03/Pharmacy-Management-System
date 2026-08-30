@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Portal - Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Real scannable barcode generator (client-side, no server needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            background: radial-gradient(circle at 20% 20%, #e0f7f4 0%, transparent 45%),
+                        radial-gradient(circle at 80% 80%, #e3f0ff 0%, transparent 45%),
+                        linear-gradient(135deg, #f4f7fb 0%, #eef2fa 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .back-link {
+            max-width: 420px;
+            margin: 0 auto 1.2rem auto;
+            display: block;
+        }
+
+        .id-wrapper {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        /* ===== OFFICIAL ID CARD ===== */
+        .id-card {
+            background: linear-gradient(160deg, #ccfbf1 0%, #bae6fd 55%, #a7d8f0 100%);
+            border-radius: 22px;
+            box-shadow: 0 25px 60px rgba(30, 41, 99, 0.18);
+            overflow: hidden;
+            position: relative;
+            padding: 1.5rem 1.5rem 0 1.5rem;
+            animation: dropIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .id-top {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .seal-badge {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            border: 3px solid #0f766e;
+        }
+
+        .id-org-title {
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 1.15rem;
+            line-height: 1.15;
+            letter-spacing: -0.2px;
+        }
+
+        .id-org-sub {
+            font-size: 0.68rem;
+            color: #0f766e;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .id-verified-stamp {
+            margin-left: auto;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #0891b2;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 10px rgba(8,145,178,0.3);
+            flex-shrink: 0;
+        }
+
+        .id-body-row {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .id-info {
+            flex: 1;
+            padding-bottom: 1.4rem;
+        }
+
+        .id-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #0f766e;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-top: 0.8rem;
+        }
+        .id-label:first-child { margin-top: 0; }
+
+        .id-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+
+        .id-value.small {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .edit-name-btn {
+            background: none;
+            border: none;
+            color: #0891b2;
+            font-size: 0.85rem;
+            padding: 0;
+            margin-left: 6px;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        .edit-name-btn:hover { color: #0369a1; }
+
+        /* Generic avatar box - real photo இல்லாம, ஒரு silhouette icon */
+        .id-photo-box {
+            width: 108px;
+            height: 128px;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 3px solid #fff;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .id-photo-box svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .role-ribbon {
+            background: linear-gradient(135deg, #0f766e, #0369a1);
+            color: #fff;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            padding: 0.6rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            margin: 0 -1.5rem;
+        }
+
+        .id-bottom-strip {
+            background: #0f172a;
+            padding: 0.9rem 1.5rem;
+            margin: 0 -1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .id-bottom-strip .valid-text {
+            color: #94a3b8;
+            font-size: 0.68rem;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .id-bottom-strip .valid-text strong {
+            color: #fff;
+            display: block;
+            font-size: 0.78rem;
+        }
+
+        .barcode-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 6px 10px 2px 10px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .barcode-box svg {
+            width: 100%;
+            max-width: 190px;
+            height: auto;
+        }
+
+        /* Info banner below card, matches the reference's promo strip */
+        .promo-banner {
+            background: linear-gradient(135deg, #0f766e, #0369a1);
+            border-radius: 16px;
+            padding: 1.2rem 1.4rem;
+            text-align: center;
+            color: #fff;
+            margin-top: 1.2rem;
+        }
+        .promo-banner .line1 {
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 0.4px;
+        }
+        .promo-banner .line2 {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin: 0.3rem 0;
+        }
+        .promo-banner .line3 {
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 1.2rem;
+        }
+
+        .btn-back {
+            border-radius: 10px;
+            font-weight: 600;
+            border: 1.5px solid #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-logout {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .btn-logout:hover { background: #fecaca; color: #b91c1c; }
+
+        .btn-save-name {
+            background: linear-gradient(135deg, #14b8a6, #0891b2);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.55rem 1.2rem;
+        }
+        .btn-save-name:hover { color: #fff; opacity: 0.92; }
+        .btn-save-name:disabled { opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <div class="id-wrapper">
+        <a href="dashboard.html" class="back-link text-decoration-none text-muted small">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+
+        <div class="id-card">
+            <div class="id-top">
+                <div class="seal-badge">
+                    <i class="bi bi-capsule text-teal fs-4" style="color:#0f766e;"></i>
+                </div>
+                <div>
+                    <div class="id-org-title">PharmaCare<br>Management System</div>
+                    <div class="id-org-sub">Official Staff ID</div>
+                </div>
+                <div class="id-verified-stamp">
+                    <i class="bi bi-patch-check-fill"></i>
+                </div>
+            </div>
+
+            <div class="id-body-row">
+                <div class="id-info">
+                    <div class="id-label">Name</div>
+                    <div class="id-value">
+                        <span id="profileName">-</span>
+                        <button type="button" class="edit-name-btn" data-bs-toggle="modal" data-bs-target="#editNameModal" title="Edit name">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </div>
+
+                    <div class="id-label">Registration No.</div>
+                    <div class="id-value small" id="profileId">-</div>
+
+                    <div class="id-label">Email</div>
+                    <div class="id-value small" id="profileEmail" style="font-size:0.82rem; font-weight:600;">-</div>
+                </div>
+
+                <!-- Generic avatar illustration - real photo பயன்படுத்தவில்லை -->
+                <div class="id-photo-box">
+                    <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="100" height="120" fill="#e0f2fe"/>
+                        <circle cx="50" cy="42" r="22" fill="#94a3b8"/>
+                        <path d="M10 118 Q10 78 50 78 Q90 78 90 118 Z" fill="#94a3b8"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="role-ribbon" id="profileRole">ADMIN</div>
+
+            <div class="id-bottom-strip">
+                <div class="valid-text">
+                    <strong>ID Valid While Employed</strong>
+                </div>
+                <div class="barcode-box">
+                    <svg id="barcodeSvg"></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="promo-banner">
+            <div class="line1">PHARMACARE MANAGEMENT SYSTEM</div>
+            <div class="line2">Official Staff Identity Card</div>
+            <div class="line3">YOUR IDENTITY, YOUR TRUST!</div>
+        </div>
+
+        <div class="action-row">
+            <a href="dashboard.html" class="btn btn-back flex-fill">Back</a>
+            <button class="btn btn-logout flex-fill" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Edit Name Modal -->
+    <div class="modal fade" id="editNameModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-3" style="border-radius: 16px;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold">Edit Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label small text-muted">New Name</label>
+                    <input type="text" id="newNameInput" class="form-control" placeholder="Enter your name">
+                    <div id="editNameError" class="text-danger small mt-2" style="display:none;"></div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-save-name" onclick="saveNewName()">
+                        <span id="saveNameBtnText">Save Changes</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+        if (user.email) {
+            document.getElementById("profileEmail").innerText = user.email;
+
+            
+            const displayName = user.username || user.email.split('@')[0].toUpperCase();
+            document.getElementById("profileName").innerText = displayName;
+
+            
+            const rawId = parseInt(user.id || user.user_id || 1, 10);
+            const staffCode = 1000 + rawId + 320;
+            document.getElementById("profileId").innerText = staffCode;
+
+            const role = (user.role || "Admin").toUpperCase();
+            document.getElementById("profileRole").innerText = role;
+
+            
+            JsBarcode("#barcodeSvg", String(staffCode), {
+                format: "CODE128",
+                lineColor: "#0f172a",
+                width: 1.8,
+                height: 32,
+                displayValue: false,
+                margin: 4
+            });
+        } else {
+            
+            window.location.href = "index.html";
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+        const editNameModalEl = document.getElementById('editNameModal');
+        editNameModalEl.addEventListener('show.bs.modal', function () {
+            document.getElementById('newNameInput').value = document.getElementById('profileName').innerText;
+            document.getElementById('editNameError').style.display = 'none';
+        });
+
+        
+        async function saveNewName() {
+            const newName = document.getElementById('newNameInput').value.trim();
+            const errorBox = document.getElementById('editNameError');
+            const saveBtnText = document.getElementById('saveNameBtnText');
+
+            if (!newName) {
+                errorBox.innerText = "Name-ஐ காலியாக விட முடியாது!";
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            saveBtnText.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Saving...`;
+
+            try {
+                const res = await fetch("http://localhost:5000/api/auth/update-name", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: user.id, username: newName })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+        
+                    user.username = newName;
+                    localStorage.setItem("user", JSON.stringify(user));
+
+                    
+                    document.getElementById("profileName").innerText = newName;
+
+                    bootstrap.Modal.getInstance(editNameModalEl).hide();
+                } else {
+                    errorBox.innerText = data.message || "Name update ஆகவில்லை!";
+                    errorBox.style.display = 'block';
+                }
+            } catch (err) {
+                errorBox.innerText = "Server Connection Failed!";
+                errorBox.style.display = 'block';
+            }
+
+            saveBtnText.innerText = "Save Changes";
+        }
+    </script>
+</body>
+</html>

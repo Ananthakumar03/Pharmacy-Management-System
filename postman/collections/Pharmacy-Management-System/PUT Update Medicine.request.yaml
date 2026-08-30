@@ -1,0 +1,25 @@
+$kind: http-request
+name: "   PUT Update Medicine"
+description: ""
+url: "   http://localhost:5000/api/medicines/3"
+method: PUT
+body:
+  type: json
+  content: "   {\r
+
+    \       \"name\": \"Cetirizine\",\r
+
+    \       \"category\": \"Tablet\",\r
+
+    \       \"manufacturer\": \"MediCure Labs\",\r
+
+    \       \"batch_number\": \"C205\",\r
+
+    \       \"quantity\": 150,\r
+
+    \       \"price\": 20,\r
+
+    \       \"expiry_date\": \"2028-01-15\"\r
+
+    \   }"
+order: 2517407369146498

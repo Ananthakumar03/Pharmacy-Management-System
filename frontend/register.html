@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaCare - Create Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(45, 212, 191, 0.18), transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.18), transparent 40%),
+                #eef2ff;
+        }
+
+        .login-wrapper {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 950px;
+            width: 100%;
+            min-height: 550px;
+        }
+
+        .form-side {
+            padding: 3rem 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand-badge {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #14b8a6, #2563eb);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-side h2 {
+            font-weight: 800;
+            color: #1e1b4b;
+        }
+
+        .form-side p.subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .input-icon-group {
+            position: relative;
+        }
+
+        .input-icon-group i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .input-icon-group .form-control {
+            padding-left: 40px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            padding-top: 0.65rem;
+            padding-bottom: 0.65rem;
+        }
+
+        .input-icon-group .form-control:focus {
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+            background: #fff;
+        }
+
+        .toggle-eye {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Browser-ஓட own built-in password reveal icon-ஐ hide பண்ணுறது (Edge) */
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear {
+            display: none;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #14b8a6, #2563eb);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+            transition: 0.3s ease;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+            color: #fff;
+        }
+
+        .illustration-side {
+            background: linear-gradient(160deg, #2dd4bf, #2563eb);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .illustration-side .icon-circle {
+            width: 130px;
+            height: 130px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .illustration-side .float-1,
+        .illustration-side .float-2 {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.12);
+            font-size: 6rem;
+            animation: float 6s ease-in-out infinite;
+        }
+        .float-1 { top: 12%; left: 15%; }
+        .float-2 { bottom: 12%; right: 15%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(8deg); }
+        }
+
+        .login-link {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .login-link a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        small.text-warning {
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 767px) {
+            .illustration-side { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <div class="row g-0">
+            <div class="col-md-6 form-side">
+
+                <div class="brand-badge">
+                    <i class="bi bi-capsule text-white fs-4"></i>
+                </div>
+
+                <h2 class="mb-1">Create Account</h2>
+                <p class="subtitle mb-4">Join PharmaCare Platform</p>
+
+                <div id="alertMsg"></div>
+
+                <form id="registerForm">
+                    <div class="mb-3 input-icon-group">
+                        <i class="bi bi-person"></i>
+                        <input type="text" id="username" class="form-control" placeholder="Full Name" required>
+                    </div>
+
+                    <div class="mb-3 input-icon-group">
+                        <i class="bi bi-envelope"></i>
+                        <input type="email" id="email" class="form-control" placeholder="Email" required>
+                    </div>
+
+                    <div class="mb-2 input-icon-group">
+                        <i class="bi bi-lock"></i>
+                        <input type="password" id="password" class="form-control" placeholder="Password" required>
+                        <button type="button" class="toggle-eye" id="togglePassword">
+                            <i class="bi bi-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    <small class="text-warning d-block mb-3" id="passwordError" style="display: none !important;">
+                        Min 8 chars, 1 uppercase, 1 number & 1 special char.
+                    </small>
+
+                    <div class="mb-2 input-icon-group">
+                        <i class="bi bi-lock-fill"></i>
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+                        <button type="button" class="toggle-eye" id="toggleConfirmPassword">
+                            <i class="bi bi-eye" id="eyeIconConfirm"></i>
+                        </button>
+                    </div>
+                    <small class="text-danger d-block mb-3" id="confirmPasswordError" style="display: none !important;">
+                        Passwords do not match.
+                    </small>
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 0.85rem; color: #6b7280; font-weight: 600;">Register as</label>
+                        <div class="input-icon-group">
+                            <i class="bi bi-person-badge"></i>
+                            <select id="role" class="form-control" required>
+                                <option value="user">User</option>
+                                <option value="staff">Staff</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-register w-100 mb-3">Create Account</button>
+
+                    <p class="login-link text-center mb-0">
+                        Already have an account? <a href="index.html">Login</a>
+                    </p>
+                </form>
+            </div>
+
+            <div class="col-md-6 illustration-side d-none d-md-flex">
+                <i class="bi bi-capsule-pill float-1"></i>
+                <i class="bi bi-prescription2 float-2"></i>
+                <div class="icon-circle">
+                    <i class="bi bi-person-plus text-white" style="font-size: 3.5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            eyeIcon.classList.toggle('bi-eye');
+            eyeIcon.classList.toggle('bi-eye-slash');
+        });
+
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const eyeIconConfirm = document.getElementById('eyeIconConfirm');
+
+        toggleConfirmPassword.addEventListener('click', function () {
+            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordInput.setAttribute('type', type);
+            eyeIconConfirm.classList.toggle('bi-eye');
+            eyeIconConfirm.classList.toggle('bi-eye-slash');
+        });
+
+        // Password strength check: 8+ chars, 1 uppercase, 1 number, 1 special char
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const username = document.getElementById("username").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const role = document.getElementById("role").value;
+            const btn = document.getElementById("submitBtn");
+            const passwordError = document.getElementById("passwordError");
+            const confirmPasswordError = document.getElementById("confirmPasswordError");
+
+            if (!passwordRegex.test(password)) {
+                passwordError.style.display = "block";
+                return;
+            }
+            passwordError.style.display = "none";
+
+            if (password !== confirmPassword) {
+                confirmPasswordError.style.display = "block";
+                return;
+            }
+            confirmPasswordError.style.display = "none";
+
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Creating account...`;
+            btn.disabled = true;
+
+            try {
+                const res = await fetch("http://localhost:5000/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, email, password, role })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById("alertMsg").innerHTML =
+                        `<div class="alert alert-success py-2 small">${data.message || 'Account created!'} Redirecting to login...</div>`;
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 1500);
+                } else {
+                    document.getElementById("alertMsg").innerHTML =
+                        `<div class="alert alert-danger py-2 small">${data.message || 'Registration failed'}</div>`;
+                    btn.innerHTML = "Create Account";
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                document.getElementById("alertMsg").innerHTML =
+                    `<div class="alert alert-danger py-2 small">Server Connection Failed!</div>`;
+                btn.innerHTML = "Create Account";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

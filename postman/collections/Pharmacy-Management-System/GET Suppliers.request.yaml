@@ -1,0 +1,6 @@
+$kind: http-request
+name: "   GET Suppliers"
+description: ""
+url: "   http://localhost:5000/api/suppliers"
+method: GET
+order: 4432182805016232

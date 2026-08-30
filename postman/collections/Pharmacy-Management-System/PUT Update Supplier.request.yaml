@@ -1,0 +1,19 @@
+$kind: http-request
+name: "   PUT Update Supplier"
+description: ""
+url: "   http://localhost:5000/api/suppliers/1"
+method: PUT
+body:
+  type: json
+  content: "   {\r
+
+    \       \"name\": \"MediCure Labs Distributors\",\r
+
+    \       \"phone\": \"9123456781\",\r
+
+    \       \"email\": \"updated@medicure.com\",\r
+
+    \       \"address\": \"Trichy, Tamil Nadu\"\r
+
+    \   }"
+order: 4496581976854985
