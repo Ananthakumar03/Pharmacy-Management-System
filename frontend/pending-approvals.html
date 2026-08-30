@@ -140,7 +140,7 @@
 
         async function loadPendingUsers() {
             try {
-                const res = await fetch("http://localhost:5000/api/auth/pending-users", {
+                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/auth/pending-users", {
                     headers: { "Authorization": "Bearer " + token }
                 });
                 const data = await res.json();
@@ -181,7 +181,7 @@
         async function approveUser(id) {
             if (!confirm("Approve this account?")) return;
             try {
-                const res = await fetch(`http://localhost:5000/api/auth/approve-user/${id}`, {
+                const res = await fetch(`https://pharmacy-management-system-production-7319.up.railway.app/api/auth/approve-user/${id}`, {
                     method: "PUT",
                     headers: { "Authorization": "Bearer " + token }
                 });
@@ -199,7 +199,7 @@
         async function rejectUser(id) {
             if (!confirm("Reject and delete this account request?")) return;
             try {
-                const res = await fetch(`http://localhost:5000/api/auth/reject-user/${id}`, {
+                const res = await fetch(`https://pharmacy-management-system-production-7319.up.railway.app/api/auth/reject-user/${id}`, {
                     method: "DELETE",
                     headers: { "Authorization": "Bearer " + token }
                 });

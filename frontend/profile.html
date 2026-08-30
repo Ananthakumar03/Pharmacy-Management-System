@@ -427,7 +427,7 @@
             saveBtnText.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Saving...`;
 
             try {
-                const res = await fetch("http://localhost:5000/api/auth/update-name", {
+                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/auth/update-name", {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ id: user.id, username: newName })

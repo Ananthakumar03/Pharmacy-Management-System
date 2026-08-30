@@ -393,7 +393,7 @@
 
         async function loadPendingCount() {
             try {
-                const res = await fetch("http://localhost:5000/api/auth/pending-users", {
+                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/auth/pending-users", {
                     headers: { "Authorization": "Bearer " + token }
                 });
                 const data = await res.json();
@@ -410,11 +410,11 @@
         // Fetch Dashboard Data
         async function loadDashboardData() {
             try {
-                const medRes = await fetch("http://localhost:5000/api/medicines");
+                const medRes = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/medicines");
                 const medData = await medRes.json();
                 document.getElementById("totalMedicines").innerText = medData.length || 0;
 
-                const salesRes = await fetch("http://localhost:5000/api/sales");
+                const salesRes = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/sales");
                 const salesData = await salesRes.json();
                 document.getElementById("totalSales").innerText = salesData.length || 0;
 
@@ -453,7 +453,7 @@
             }
 
             try {
-                const res = await fetch("http://localhost:5000/api/medicines");
+                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/medicines");
                 const medicines = await res.json();
 
                 const filtered = medicines.filter(m => m.name.toLowerCase().includes(query));
@@ -576,7 +576,7 @@ function confirmLogout() {
         // ===============================
         async function downloadSalesPDF() {
             try {
-                const res = await fetch("http://localhost:5000/api/sales");
+                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/sales");
                 const salesData = await res.json();
 
                 const { jsPDF } = window.jspdf;
@@ -618,7 +618,7 @@ function confirmLogout() {
         // ===============================
         async function downloadSalesExcel() {
             try {
-                const res = await fetch("http://localhost:5000/api/sales");
+                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/sales");
                 const salesData = await res.json();
 
                 // Date order-ல sort பண்ணி, 1, 2, 3... clean-ஆ serial number கொடுக்குறது
