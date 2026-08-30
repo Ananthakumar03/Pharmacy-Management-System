@@ -1,7 +1,7 @@
 $kind: http-request
 name: "   PUT Update Medicine"
 description: ""
-url: "   http://localhost:5000/api/medicines/3"
+url: "   https://pharmacy-management-system-production-7319.up.railway.app/api/medicines/3"
 method: PUT
 body:
   type: json

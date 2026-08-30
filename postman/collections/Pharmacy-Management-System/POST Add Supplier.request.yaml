@@ -1,7 +1,7 @@
 $kind: http-request
 name: "   POST Add Supplier"
 description: ""
-url: "   http://localhost:5000/api/suppliers"
+url: "   https://pharmacy-management-system-production-7319.up.railway.app/api/suppliers"
 method: POST
 body:
   type: json

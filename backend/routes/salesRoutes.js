@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
 // CREATE NEW SALE (WITH AUTO STOCK REDUCTION)
 // ===============================
 router.post("/", (req, res) => {
-    const { items } = req.body; // items array format: [{ medicine_id, quantity, price }]
+    const { items, customerName, customerPhone } = req.body; // items array format: [{ medicine_id, quantity, price }]
 
     if (!items || items.length === 0) {
         return res.status(400).json({ message: "No items provided in sale" });
@@ -29,8 +29,8 @@ router.post("/", (req, res) => {
     const totalAmount = items.reduce((sum, item) => sum + (item.quantity * item.price), 0);
 
     // 1. Insert into sales table
-    const saleSql = "INSERT INTO sales (total_amount) VALUES (?)";
-    db.query(saleSql, [totalAmount], (err, result) => {
+    const saleSql = "INSERT INTO sales (total_amount, customer_name, customer_phone) VALUES (?, ?, ?)";
+    db.query(saleSql, [totalAmount, customerName || null, customerPhone || null], (err, result) => {
         if (err) {
             return res.status(500).json({ message: "Failed to create sale", error: err.message });
         }

@@ -1,6 +1,6 @@
 $kind: http-request
 name: "   DELETE Supplier"
 description: ""
-url: "   http://localhost:5000/api/suppliers/1"
+url: "   https://pharmacy-management-system-production-7319.up.railway.app/api/suppliers/1"
 method: DELETE
 order: 4499804435347155

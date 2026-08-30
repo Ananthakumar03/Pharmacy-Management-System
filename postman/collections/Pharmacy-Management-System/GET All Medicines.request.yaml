@@ -1,6 +1,6 @@
 $kind: http-request
 name: "     GET All Medicines"
 description: ""
-url: "   http://localhost:5000/api/medicines"
+url: "   https://pharmacy-management-system-production-7319.up.railway.app/api/medicines"
 method: GET
 order: 1787912440186
