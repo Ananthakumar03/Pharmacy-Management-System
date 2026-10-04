@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>PharmaCare - Pending Approvals</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
     <style>
         body {
             background: #f4f6fb;
@@ -33,6 +43,10 @@
             font-size: 0.9rem;
         }
 
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
         .custom-card {
             background: #fff;
             border-radius: 16px;
@@ -40,8 +54,18 @@
             overflow: hidden;
         }
 
-        table {
+        /* Horizontal scrolling for pending approvals table */
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-scroll table {
             margin-bottom: 0;
+            min-width: 800px;
+            width: 100%;
         }
 
         thead th {
@@ -52,12 +76,14 @@
             letter-spacing: 0.03em;
             border-bottom: 1px solid #e5e7eb;
             padding: 0.9rem 1.2rem;
+            white-space: nowrap;
         }
 
         tbody td {
             padding: 0.9rem 1.2rem;
             vertical-align: middle;
             border-bottom: 1px solid #f1f3f5;
+            white-space: nowrap;
         }
 
         .badge-pending {
@@ -67,6 +93,7 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .btn-approve {
@@ -77,8 +104,13 @@
             padding: 0.35rem 0.9rem;
             font-size: 0.85rem;
             font-weight: 600;
+            white-space: nowrap;
         }
-        .btn-approve:hover { background: #0d9488; color: #fff; }
+
+        .btn-approve:hover {
+            background: #0d9488;
+            color: #fff;
+        }
 
         .btn-reject {
             background: #fee2e2;
@@ -89,132 +121,450 @@
             font-size: 0.85rem;
             font-weight: 600;
             margin-left: 0.5rem;
+            white-space: nowrap;
         }
-        .btn-reject:hover { background: #fecaca; }
+
+        .btn-reject:hover {
+            background: #fecaca;
+        }
 
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
             color: #9ca3af;
         }
-        .empty-state i { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+
+            body {
+                padding: 1rem;
+                overflow-x: hidden;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .page-header h3 {
+                font-size: 1.25rem;
+            }
+
+            .page-header p {
+                font-size: 0.8rem !important;
+            }
+
+            .back-link {
+                font-size: 0.85rem;
+            }
+
+            .custom-card {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            /*
+             * The table itself is wider than the phone.
+             * User can swipe left/right inside this area.
+             */
+            .table-scroll {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto !important;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-x;
+            }
+
+            .table-scroll table {
+                min-width: 800px;
+                width: 800px;
+            }
+
+            thead th {
+                font-size: 0.72rem;
+                padding: 0.7rem 0.9rem;
+            }
+
+            tbody td {
+                font-size: 0.78rem;
+                padding: 0.7rem 0.9rem;
+            }
+
+            .btn-approve,
+            .btn-reject {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.7rem;
+            }
+
+            .badge-pending {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.6rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            body {
+                padding: 0.7rem;
+            }
+
+            .page-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .table-scroll table {
+                min-width: 800px;
+                width: 800px;
+            }
+
+            thead th {
+                font-size: 0.68rem;
+                padding: 0.6rem 0.75rem;
+            }
+
+            tbody td {
+                font-size: 0.74rem;
+                padding: 0.6rem 0.75rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <div class="page-header">
+
         <div>
             <h3>🕒 Pending Approvals</h3>
-            <p class="text-muted mb-0" style="font-size:0.9rem;">New account requests waiting for your approval</p>
+
+            <p
+                class="text-muted mb-0"
+                style="font-size:0.9rem;"
+            >
+                New account requests waiting for your approval
+            </p>
         </div>
-        <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+
+        <a
+            href="dashboard.html"
+            class="back-link"
+        >
+            ← Back to Dashboard
+        </a>
+
     </div>
+
 
     <div id="alertMsg"></div>
 
+
     <div class="custom-card">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Requested On</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="pendingList">
-                <!-- rows injected by JS -->
-            </tbody>
-        </table>
-        <div id="emptyState" class="empty-state" style="display:none;">
-            <i class="bi bi-check-circle"></i>
-            No pending approvals right now.
+
+        <!-- Horizontal Scroll Container -->
+        <div class="table-scroll">
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Requested On</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="pendingList">
+                    <!-- rows injected by JS -->
+                </tbody>
+
+            </table>
+
         </div>
+
+
+        <div
+            id="emptyState"
+            class="empty-state"
+            style="display:none;"
+        >
+
+            <i class="bi bi-check-circle"></i>
+
+            No pending approvals right now.
+
+        </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
     <script>
+
         const token = localStorage.getItem("token");
 
+
         async function loadPendingUsers() {
+
             try {
-                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/auth/pending-users", {
-                    headers: { "Authorization": "Bearer " + token }
-                });
+
+                const res = await fetch(
+                    "https://pharmacy-management-system-production-7319.up.railway.app/api/auth/pending-users",
+                    {
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        }
+                    }
+                );
+
+
                 const data = await res.json();
 
-                const tbody = document.getElementById("pendingList");
-                const emptyState = document.getElementById("emptyState");
+
+                const tbody =
+                    document.getElementById("pendingList");
+
+                const emptyState =
+                    document.getElementById("emptyState");
+
+
                 tbody.innerHTML = "";
 
-                if (!Array.isArray(data) || data.length === 0) {
+
+                if (
+                    !Array.isArray(data) ||
+                    data.length === 0
+                ) {
+
                     emptyState.style.display = "block";
+
                     return;
                 }
+
+
                 emptyState.style.display = "none";
 
+
                 data.forEach(user => {
-                    const row = document.createElement("tr");
+
+                    const row =
+                        document.createElement("tr");
+
+
                     row.innerHTML = `
-                        <td>${user.username}</td>
-                        <td>${user.email}</td>
-                        <td class="text-capitalize">${user.role}</td>
-                        <td>${new Date(user.created_at).toLocaleDateString()}</td>
-                        <td><span class="badge-pending">Pending</span></td>
+
                         <td>
-                            <button class="btn-approve" onclick="approveUser(${user.id})">Approve</button>
-                            <button class="btn-reject" onclick="rejectUser(${user.id})">Reject</button>
+                            ${user.username}
                         </td>
+
+                        <td>
+                            ${user.email}
+                        </td>
+
+                        <td class="text-capitalize">
+                            ${user.role}
+                        </td>
+
+                        <td>
+                            ${new Date(
+                                user.created_at
+                            ).toLocaleDateString()}
+                        </td>
+
+                        <td>
+                            <span class="badge-pending">
+                                Pending
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn-approve"
+                                onclick="approveUser(${user.id})"
+                            >
+                                Approve
+                            </button>
+
+                            <button
+                                class="btn-reject"
+                                onclick="rejectUser(${user.id})"
+                            >
+                                Reject
+                            </button>
+
+                        </td>
+
                     `;
+
+
                     tbody.appendChild(row);
+
                 });
 
-            } catch (err) {
-                console.error("Error loading pending users:", err);
-                document.getElementById("alertMsg").innerHTML =
-                    `<div class="alert alert-danger py-2 small">Could not load pending approvals. Is the server running?</div>`;
             }
+
+            catch (err) {
+
+                console.error(
+                    "Error loading pending users:",
+                    err
+                );
+
+
+                document.getElementById(
+                    "alertMsg"
+                ).innerHTML = `
+
+                    <div class="alert alert-danger py-2 small">
+
+                        Could not load pending approvals.
+                        Is the server running?
+
+                    </div>
+
+                `;
+
+            }
+
         }
+
 
         async function approveUser(id) {
-            if (!confirm("Approve this account?")) return;
-            try {
-                const res = await fetch(`https://pharmacy-management-system-production-7319.up.railway.app/api/auth/approve-user/${id}`, {
-                    method: "PUT",
-                    headers: { "Authorization": "Bearer " + token }
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    loadPendingUsers();
-                } else {
-                    alert(data.message || "Failed to approve");
-                }
-            } catch (err) {
-                alert("Server connection failed");
+
+            if (
+                !confirm(
+                    "Approve this account?"
+                )
+            ) {
+                return;
             }
+
+
+            try {
+
+                const res = await fetch(
+                    `https://pharmacy-management-system-production-7319.up.railway.app/api/auth/approve-user/${id}`,
+                    {
+                        method: "PUT",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+                const data =
+                    await res.json();
+
+
+                if (res.ok) {
+
+                    loadPendingUsers();
+
+                }
+
+                else {
+
+                    alert(
+                        data.message ||
+                        "Failed to approve"
+                    );
+
+                }
+
+            }
+
+            catch (err) {
+
+                alert(
+                    "Server connection failed"
+                );
+
+            }
+
         }
+
 
         async function rejectUser(id) {
-            if (!confirm("Reject and delete this account request?")) return;
-            try {
-                const res = await fetch(`https://pharmacy-management-system-production-7319.up.railway.app/api/auth/reject-user/${id}`, {
-                    method: "DELETE",
-                    headers: { "Authorization": "Bearer " + token }
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    loadPendingUsers();
-                } else {
-                    alert(data.message || "Failed to reject");
-                }
-            } catch (err) {
-                alert("Server connection failed");
+
+            if (
+                !confirm(
+                    "Reject and delete this account request?"
+                )
+            ) {
+                return;
             }
+
+
+            try {
+
+                const res = await fetch(
+                    `https://pharmacy-management-system-production-7319.up.railway.app/api/auth/reject-user/${id}`,
+                    {
+                        method: "DELETE",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+                const data =
+                    await res.json();
+
+
+                if (res.ok) {
+
+                    loadPendingUsers();
+
+                }
+
+                else {
+
+                    alert(
+                        data.message ||
+                        "Failed to reject"
+                    );
+
+                }
+
+            }
+
+            catch (err) {
+
+                alert(
+                    "Server connection failed"
+                );
+
+            }
+
         }
 
+
         loadPendingUsers();
+
     </script>
+
 </body>
 </html>
