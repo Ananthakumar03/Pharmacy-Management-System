@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicines Management - Pharmacy</title>
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -36,6 +39,8 @@
             padding: 1.5rem 1rem;
             position: fixed;
             z-index: 100;
+            top: 0;
+            left: 0;
         }
 
         .brand-header {
@@ -85,6 +90,7 @@
         .main-content {
             margin-left: 250px;
             padding: 2rem 2.5rem;
+            min-width: 0;
         }
 
         /* Header Bar Styling */
@@ -93,11 +99,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
+            gap: 1rem;
         }
 
         .search-box {
             position: relative;
             width: 320px;
+            max-width: 100%;
         }
 
         .search-box input {
@@ -113,19 +121,25 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
+            z-index: 2;
         }
 
-        /* Table Design like UI Mockup */
+        /* Table Design */
         .table-container {
             background: #ffffff;
             border-radius: 12px;
             border: 1px solid var(--border-color);
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         .table {
             margin-bottom: 0;
+            width: 100%;
+            min-width: 700px;
         }
 
         .table thead th {
@@ -137,6 +151,7 @@
             padding: 0.85rem 1.2rem;
             text-transform: uppercase;
             letter-spacing: 0.03em;
+            white-space: nowrap;
         }
 
         .table tbody td {
@@ -144,6 +159,7 @@
             vertical-align: middle;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .product-info {
@@ -162,6 +178,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
+            flex-shrink: 0;
         }
 
         .status-badge {
@@ -172,6 +189,7 @@
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .status-in-stock {
@@ -197,7 +215,7 @@
             color: var(--primary-dark);
         }
 
-        /* Staff account-க்கு view-only badge */
+        /* Staff account view-only badge */
         .view-only-badge {
             background-color: #fef3c7;
             color: #92400e;
@@ -209,53 +227,258 @@
             align-items: center;
             gap: 6px;
         }
+
+        /* ========================================================= */
+        /* MOBILE RESPONSIVE FIX */
+        /* ========================================================= */
+
+        @media (max-width: 768px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            /* Sidebar becomes a top navigation */
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+                height: auto;
+                padding: 0.8rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .brand-header {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+                padding-left: 0.2rem;
+            }
+
+            .nav-section-title {
+                font-size: 0.62rem;
+                margin: 0.6rem 0 0.3rem 0.2rem;
+            }
+
+            .nav-link-custom {
+                display: inline-flex;
+                width: auto;
+                padding: 0.45rem 0.6rem;
+                margin-right: 3px;
+                margin-bottom: 3px;
+                gap: 5px;
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+
+            /* Main content full width */
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                min-width: 0;
+                padding: 0.8rem;
+            }
+
+            /* Search + buttons */
+            .page-header {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.7rem;
+                margin-bottom: 1rem;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .page-header > .d-flex {
+                width: 100%;
+                display: flex !important;
+                flex-wrap: wrap;
+                gap: 0.4rem !important;
+            }
+
+            .page-header button,
+            .page-header .view-only-badge {
+                font-size: 0.75rem;
+            }
+
+            /* Horizontal table scroll */
+            .table-container {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table {
+                min-width: 700px;
+            }
+
+            .table thead th {
+                font-size: 0.72rem;
+                padding: 0.65rem 0.7rem;
+            }
+
+            .table tbody td {
+                font-size: 0.78rem;
+                padding: 0.7rem;
+            }
+
+            .product-info {
+                gap: 8px;
+            }
+
+            .product-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+
+            .status-badge {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.45rem;
+            }
+
+            .action-btn {
+                padding: 3px 5px;
+            }
+
+            /* Modal fits mobile screen */
+            .modal-dialog {
+                margin: 0.7rem;
+            }
+
+            .modal-content {
+                width: 100%;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 400px) {
+
+            .sidebar {
+                padding: 0.6rem;
+            }
+
+            .brand-header {
+                font-size: 1rem;
+            }
+
+            .nav-link-custom {
+                font-size: 0.68rem;
+                padding: 0.4rem 0.45rem;
+            }
+
+            .main-content {
+                padding: 0.6rem;
+            }
+
+            .table {
+                min-width: 600px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <!-- SIDEBAR -->
     <div class="sidebar">
+
         <div class="brand-header">
-            <i class="bi bi-plus-circle-fill text-primary fs-3"></i> Pharmacy
+            <i class="bi bi-plus-circle-fill text-primary fs-3"></i>
+            Pharmacy
         </div>
 
         <div class="nav-section-title">MAIN MENU</div>
-        <a href="dashboard.html" class="nav-link-custom"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
-        <a href="medicines.html" class="nav-link-custom active"><i class="bi bi-capsule"></i> Medicines</a>
-        <a href="sales.html" class="nav-link-custom"><i class="bi bi-cart-check-fill"></i> Sales / Billing</a>
+
+        <a href="dashboard.html" class="nav-link-custom">
+            <i class="bi bi-grid-1x2-fill"></i>
+            Dashboard
+        </a>
+
+        <a href="medicines.html" class="nav-link-custom active">
+            <i class="bi bi-capsule"></i>
+            Medicines
+        </a>
+
+        <a href="sales.html" class="nav-link-custom">
+            <i class="bi bi-cart-check-fill"></i>
+            Sales / Billing
+        </a>
 
         <div class="nav-section-title">SETTINGS & SYSTEM</div>
-        <a href="#" class="nav-link-custom" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+
+        <a href="#" class="nav-link-custom" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
+
     </div>
+
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-        
+
         <!-- TOP TOOLBAR -->
         <div class="page-header">
+
             <div class="search-box">
                 <i class="bi bi-search"></i>
-                <input type="text" id="tableSearch" class="form-control" placeholder="Search product name..." onkeyup="filterTable()">
+
+                <input
+                    type="text"
+                    id="tableSearch"
+                    class="form-control"
+                    placeholder="Search product name..."
+                    onkeyup="filterTable()"
+                >
             </div>
+
 
             <div class="d-flex gap-2 align-items-center">
-                <button class="btn btn-outline-secondary btn-sm rounded-2"><i class="bi bi-funnel"></i> Filter</button>
 
-                <!-- Admin-க்கு மட்டும் காட்டப்படும் Add button -->
-                <button id="addMedicineBtn" class="btn btn-primary btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#addMedicineModal">
-                    <i class="bi bi-plus-lg"></i> Add New Medicine
+                <button class="btn btn-outline-secondary btn-sm rounded-2">
+                    <i class="bi bi-funnel"></i>
+                    Filter
                 </button>
 
-                <!-- Staff account-க்கு காட்டப்படும் badge (Add button-க்கு பதிலா) -->
-                <span id="viewOnlyBadge" class="view-only-badge" style="display:none;">
-                    <i class="bi bi-eye"></i> View Only Access
+
+                <!-- Admin only Add button -->
+                <button
+                    id="addMedicineBtn"
+                    class="btn btn-primary btn-sm rounded-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addMedicineModal"
+                >
+                    <i class="bi bi-plus-lg"></i>
+                    Add New Medicine
+                </button>
+
+
+                <!-- Staff View Only badge -->
+                <span
+                    id="viewOnlyBadge"
+                    class="view-only-badge"
+                    style="display:none;"
+                >
+                    <i class="bi bi-eye"></i>
+                    View Only Access
                 </span>
+
             </div>
+
         </div>
+
 
         <!-- TABLE -->
         <div class="table-container">
+
             <table class="table">
+
                 <thead>
                     <tr>
                         <th>Product</th>
@@ -265,195 +488,534 @@
                         <th class="text-end">Actions</th>
                     </tr>
                 </thead>
+
                 <tbody id="medicineTableBody">
                     <!-- Dynamic Data -->
                 </tbody>
+
             </table>
+
         </div>
 
     </div>
+
 
     <!-- ADD MEDICINE MODAL -->
-    <div class="modal fade" id="addMedicineModal" tabindex="-1">
+    <div
+        class="modal fade"
+        id="addMedicineModal"
+        tabindex="-1"
+    >
+
         <div class="modal-dialog modal-dialog-centered">
+
             <div class="modal-content border-0 shadow">
+
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Add New Medicine</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                    <h5 class="modal-title fw-bold">
+                        Add New Medicine
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
                 </div>
+
+
                 <div class="modal-body">
+
                     <form id="addMedicineForm">
+
                         <div class="mb-3">
-                            <label class="form-label text-muted small fw-bold">MEDICINE NAME</label>
-                            <input type="text" id="medName" class="form-control" required placeholder="e.g. Paracetamol 500mg">
+
+                            <label class="form-label text-muted small fw-bold">
+                                MEDICINE NAME
+                            </label>
+
+                            <input
+                                type="text"
+                                id="medName"
+                                class="form-control"
+                                required
+                                placeholder="e.g. Paracetamol 500mg"
+                            >
+
                         </div>
+
+
                         <div class="row">
+
                             <div class="col-md-6 mb-3">
-                                <label class="form-label text-muted small fw-bold">PRICE (₹)</label>
-                                <input type="number" step="0.01" id="medPrice" class="form-control" required placeholder="0.00">
+
+                                <label class="form-label text-muted small fw-bold">
+                                    PRICE (₹)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    id="medPrice"
+                                    class="form-control"
+                                    required
+                                    placeholder="0.00"
+                                >
+
                             </div>
+
+
                             <div class="col-md-6 mb-3">
-                                <label class="form-label text-muted small fw-bold">QUANTITY (STOCK)</label>
-                                <input type="number" id="medStock" class="form-control" required placeholder="0">
+
+                                <label class="form-label text-muted small fw-bold">
+                                    QUANTITY (STOCK)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="medStock"
+                                    class="form-control"
+                                    required
+                                    placeholder="0"
+                                >
+
                             </div>
+
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 fw-bold mt-2">Save Medicine</button>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 fw-bold mt-2"
+                        >
+                            Save Medicine
+                        </button>
+
                     </form>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+
     <script>
+
         const token = localStorage.getItem("token");
-        if (!token) window.location.href = "index.html";
 
-        // Login-ல் save ஆன user object-ஐ படித்து role-ஐ எடுக்கிறோம்
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const isAdmin = user.role === "admin";
-
-        // Admin இல்லாட்டி Add button-ஐ hide பண்ணி, View Only badge-ஐ காட்டுகிறோம்
-        if (!isAdmin) {
-            document.getElementById("addMedicineBtn").style.display = "none";
-            document.getElementById("viewOnlyBadge").style.display = "inline-flex";
-        }
-
-        let allMedicinesData = [];
-
-        // Fetch medicines list
-        async function loadMedicines() {
-            try {
-                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/medicines");
-                allMedicinesData = await res.json();
-                renderTable(allMedicinesData);
-            } catch (err) {
-                console.error("Error loading medicines:", err);
-            }
-        }
-
-        // Render Table Data like Image Design
-        function renderTable(data) {
-            const tbody = document.getElementById("medicineTableBody");
-            
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No medicines found</td></tr>`;
-                return;
-            }
-
-            let html = "";
-            data.forEach(m => {
-                const inStock = m.quantity > 0;
-                const statusBadge = inStock 
-                    ? `<span class="status-badge status-in-stock"><i class="bi bi-check-circle-fill"></i> In stock</span>`
-                    : `<span class="status-badge status-out-stock"><i class="bi bi-x-circle-fill"></i> Out of stock</span>`;
-
-                // Admin-க்கு மட்டும் Delete option காட்டுகிறோம், Staff-க்கு "-" காட்டுகிறோம்
-                const actionsCell = isAdmin
-                    ? `<div class="dropdown">
-                            <button class="action-btn" data-bs-toggle="dropdown">
-                                <i class="bi bi-three-dots-vertical fs-5"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                <li><a class="dropdown-item text-danger" href="#" onclick="deleteMedicine(${m.id})"><i class="bi bi-trash me-2"></i> Delete Product</a></li>
-                            </ul>
-                        </div>`
-                    : `<span class="text-muted small">—</span>`;
-
-                html += `
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <div class="product-icon"><i class="bi bi-capsule"></i></div>
-                                <div>
-                                    <div class="fw-bold text-dark">${m.name}</div>
-                                    <small class="text-muted">ID: #${m.id}</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="fw-bold text-dark">₹${parseFloat(m.price).toFixed(2)}</td>
-                        <td>
-                            <span class="fw-bold ${inStock ? 'text-primary' : 'text-danger'}">${m.quantity} Units</span>
-                        </td>
-                        <td>${statusBadge}</td>
-                        <td class="text-end">${actionsCell}</td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
-        }
-
-        // Search Filter
-        function filterTable() {
-            const query = document.getElementById("tableSearch").value.toLowerCase();
-            const filtered = allMedicinesData.filter(m => m.name.toLowerCase().includes(query));
-            renderTable(filtered);
-        }
-
-        // Add Medicine Submit
-        document.getElementById("addMedicineForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const name = document.getElementById("medName").value;
-            const price = document.getElementById("medPrice").value;
-            const quantity = document.getElementById("medStock").value;
-
-            try {
-                const res = await fetch("https://pharmacy-management-system-production-7319.up.railway.app/api/medicines", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ name, price, quantity })
-                });
-
-                if (res.ok) {
-                    // Close Modal & Reset Form
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('addMedicineModal'));
-                    modal.hide();
-                    document.getElementById("addMedicineForm").reset();
-                    
-                    loadMedicines(); // Reload list
-                } else if (res.status === 403) {
-                    alert("Access denied. Admins only.");
-                } else {
-                    alert("Failed to add medicine.");
-                }
-            } catch (err) {
-                console.error("Add Error:", err);
-            }
-        });
-
-        // Delete Medicine
-        async function deleteMedicine(id) {
-            if (!confirm("Are you sure you want to delete this medicine?")) return;
-
-            try {
-                const res = await fetch(`https://pharmacy-management-system-production-7319.up.railway.app/api/medicines/${id}`, {
-                    method: "DELETE",
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-
-                if (res.ok) {
-                    loadMedicines();
-                } else if (res.status === 403) {
-                    alert("Access denied. Admins only.");
-                } else {
-                    alert("Failed to delete medicine.");
-                }
-            } catch (err) {
-                console.error("Delete Error:", err);
-            }
-        }
-
-        function logout() {
-            localStorage.clear();
+        if (!token) {
             window.location.href = "index.html";
         }
 
+
+        // Login-ல் save ஆன user object-ஐ படித்து role-ஐ எடுக்கிறோம்
+        const user = JSON.parse(
+            localStorage.getItem("user") || "{}"
+        );
+
+        const isAdmin = user.role === "admin";
+
+
+        // Admin இல்லாட்டி Add button-ஐ hide பண்ணி,
+        // View Only badge-ஐ காட்டுகிறோம்
+        if (!isAdmin) {
+
+            document.getElementById("addMedicineBtn").style.display = "none";
+
+            document.getElementById("viewOnlyBadge").style.display = "inline-flex";
+
+        }
+
+
+        let allMedicinesData = [];
+
+
+        // Fetch medicines list
+        async function loadMedicines() {
+
+            try {
+
+                const res = await fetch(
+                    "https://pharmacy-management-system-production-7319.up.railway.app/api/medicines"
+                );
+
+                allMedicinesData = await res.json();
+
+                renderTable(allMedicinesData);
+
+            } catch (err) {
+
+                console.error(
+                    "Error loading medicines:",
+                    err
+                );
+
+            }
+
+        }
+
+
+        // Render Table Data
+        function renderTable(data) {
+
+            const tbody = document.getElementById(
+                "medicineTableBody"
+            );
+
+
+            if (data.length === 0) {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="5"
+                            class="text-center text-muted py-4"
+                        >
+                            No medicines found
+                        </td>
+                    </tr>
+                `;
+
+                return;
+
+            }
+
+
+            let html = "";
+
+
+            data.forEach(m => {
+
+                const inStock = m.quantity > 0;
+
+
+                const statusBadge = inStock
+
+                    ? `
+                        <span class="status-badge status-in-stock">
+                            <i class="bi bi-check-circle-fill"></i>
+                            In stock
+                        </span>
+                    `
+
+                    : `
+                        <span class="status-badge status-out-stock">
+                            <i class="bi bi-x-circle-fill"></i>
+                            Out of stock
+                        </span>
+                    `;
+
+
+                // Admin-க்கு மட்டும் Delete option
+                // Staff-க்கு "-" காட்டுகிறோம்
+                const actionsCell = isAdmin
+
+                    ? `
+                        <div class="dropdown">
+
+                            <button
+                                class="action-btn"
+                                data-bs-toggle="dropdown"
+                            >
+                                <i class="bi bi-three-dots-vertical fs-5"></i>
+                            </button>
+
+
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+
+                                <li>
+
+                                    <a
+                                        class="dropdown-item text-danger"
+                                        href="#"
+                                        onclick="deleteMedicine(${m.id})"
+                                    >
+                                        <i class="bi bi-trash me-2"></i>
+                                        Delete Product
+                                    </a>
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    `
+
+                    : `
+                        <span class="text-muted small">
+                            —
+                        </span>
+                    `;
+
+
+                html += `
+
+                    <tr>
+
+                        <td>
+
+                            <div class="product-info">
+
+                                <div class="product-icon">
+                                    <i class="bi bi-capsule"></i>
+                                </div>
+
+                                <div>
+
+                                    <div class="fw-bold text-dark">
+                                        ${m.name}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        ID: #${m.id}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td class="fw-bold text-dark">
+                            ₹${parseFloat(m.price).toFixed(2)}
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="fw-bold ${
+                                    inStock
+                                        ? "text-primary"
+                                        : "text-danger"
+                                }"
+                            >
+                                ${m.quantity} Units
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            ${statusBadge}
+                        </td>
+
+
+                        <td class="text-end">
+                            ${actionsCell}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            tbody.innerHTML = html;
+
+        }
+
+
+        // Search Filter
+        function filterTable() {
+
+            const query = document
+                .getElementById("tableSearch")
+                .value
+                .toLowerCase();
+
+
+            const filtered = allMedicinesData.filter(
+                m => m.name.toLowerCase().includes(query)
+            );
+
+
+            renderTable(filtered);
+
+        }
+
+
+        // Add Medicine Submit
+        document
+            .getElementById("addMedicineForm")
+            .addEventListener("submit", async (e) => {
+
+                e.preventDefault();
+
+
+                const name =
+                    document.getElementById("medName").value;
+
+
+                const price =
+                    document.getElementById("medPrice").value;
+
+
+                const quantity =
+                    document.getElementById("medStock").value;
+
+
+                try {
+
+                    const res = await fetch(
+                        "https://pharmacy-management-system-production-7319.up.railway.app/api/medicines",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${token}`
+                            },
+
+                            body: JSON.stringify({
+                                name,
+                                price,
+                                quantity
+                            })
+                        }
+                    );
+
+
+                    if (res.ok) {
+
+                        // Close Modal & Reset Form
+                        const modal =
+                            bootstrap.Modal.getInstance(
+                                document.getElementById(
+                                    "addMedicineModal"
+                                )
+                            );
+
+
+                        modal.hide();
+
+
+                        document
+                            .getElementById("addMedicineForm")
+                            .reset();
+
+
+                        // Reload list
+                        loadMedicines();
+
+                    }
+
+                    else if (res.status === 403) {
+
+                        alert(
+                            "Access denied. Admins only."
+                        );
+
+                    }
+
+                    else {
+
+                        alert(
+                            "Failed to add medicine."
+                        );
+
+                    }
+
+                }
+
+                catch (err) {
+
+                    console.error(
+                        "Add Error:",
+                        err
+                    );
+
+                }
+
+            });
+
+
+        // Delete Medicine
+        async function deleteMedicine(id) {
+
+            if (
+                !confirm(
+                    "Are you sure you want to delete this medicine?"
+                )
+            ) {
+                return;
+            }
+
+
+            try {
+
+                const res = await fetch(
+                    `https://pharmacy-management-system-production-7319.up.railway.app/api/medicines/${id}`,
+                    {
+                        method: "DELETE",
+
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+                if (res.ok) {
+
+                    loadMedicines();
+
+                }
+
+                else if (res.status === 403) {
+
+                    alert(
+                        "Access denied. Admins only."
+                    );
+
+                }
+
+                else {
+
+                    alert(
+                        "Failed to delete medicine."
+                    );
+
+                }
+
+            }
+
+            catch (err) {
+
+                console.error(
+                    "Delete Error:",
+                    err
+                );
+
+            }
+
+        }
+
+
+        function logout() {
+
+            localStorage.clear();
+
+            window.location.href = "index.html";
+
+        }
+
+
+        // Initial load
         loadMedicines();
+
     </script>
+
 </body>
 </html>
